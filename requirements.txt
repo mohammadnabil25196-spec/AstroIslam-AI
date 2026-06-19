@@ -21,3 +21,5 @@ tqdm==4.68.3
 urllib3==2.7.0
 Werkzeug==3.1.8
 yarl==1.24.2
+gunicorn
+
