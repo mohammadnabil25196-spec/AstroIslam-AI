@@ -1,6 +1,6 @@
 import os
 import random
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import openai
 from database import get_db_connection, init_db
@@ -10,7 +10,7 @@ CORS(app, supports_credentials=True)
 
 @app.route('/')
 def home():
-    return "Welcome to AstroIslam AI! The API is running."
+    return send_from_directory('.', 'index.html')
 
 openai.api_key = os.environ.get("OPENAI_API_KEY", "YOUR_OPENAI_KEY_HERE")
 
@@ -88,7 +88,7 @@ def chat():
             model="gpt-3.5-turbo",
             messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": question}]
         )
-        response_text = completion.choices.message.content
+        response_text = completion.choices[0].message.content
         conn.close()
         return jsonify({"response": response_text, "source": "OpenAI API"}), 200
     except Exception as e:
