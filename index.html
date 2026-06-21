@@ -1,76 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { background-color: #121212; color: #ffffff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: #1e1e1e; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { text-align: center; color: #00ff88; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; background: #2c2c2c; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #00ff88; border: none; border-radius: 8px; color: #121212; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .tab { display: none; }
-        .active { display: block; }
-        #response { margin-top: 20px; padding: 15px; background: #2c2c2c; border-radius: 8px; min-height: 50px; white-space: pre-wrap; }
-    </style>
+<style>
+    body { background: #121212; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .container { width: 100%; max-width: 400px; background: #1e1e1e; padding: 20px; border-radius: 10px; text-align: center; }
+    input { width: 100%; padding: 10px; margin: 10px 0; background: #2c2c2c; border: none; color: white; border-radius: 5px; box-sizing: border-box; }
+    button { width: 100%; padding: 10px; background: #00ff88; border: none; cursor: pointer; color: black; font-weight: bold; border-radius: 5px; }
+</style>
 </head>
 <body>
-
 <div class="container">
-    <h2>AstroIslam AI</h2>
-    
-    <div id="regTab" class="tab active">
-        <input type="email" id="regEmail" placeholder="Email...">
-        <input type="password" id="regPass" placeholder="Password...">
-        <button onclick="register()">Register</button>
-        <p style="cursor:pointer; text-align:center; font-size: 12px; margin-top:10px;" onclick="showTab('otpTab')">Already registered? Verify OTP</p>
-    </div>
-
-    <div id="otpTab" class="tab">
-        <input type="email" id="otpEmail" placeholder="Email...">
-        <input type="text" id="otpCode" placeholder="Enter 6-digit OTP...">
-        <button onclick="verify()">Verify OTP</button>
-    </div>
-
-    <div id="chatTab" class="tab">
-        <input type="text" id="chatEmail" placeholder="Registered Email...">
-        <input type="text" id="question" placeholder="Sawal pucho...">
-        <button onclick="askAI()">Send</button>
-        <div id="response"></div>
-    </div>
+    <h2>AstroIslam AI Login</h2>
+    <input type="email" id="email" placeholder="Email...">
+    <input type="password" id="pass" placeholder="Password...">
+    <button onclick="login()">Login</button>
+    <div id="response" style="margin-top:20px;"></div>
 </div>
-
 <script>
-    function showTab(id) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    async function register() {
-        const email = document.getElementById('regEmail').value;
-        const password = document.getElementById('regPass').value;
-        const res = await fetch('/api/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password})});
+    async function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('pass').value;
+        const res = await fetch('/api/login', { 
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify({email, password})
+        });
         const data = await res.json();
-        alert(data.message || data.error);
-        if(!data.error) showTab('otpTab');
-    }
-
-    async function verify() {
-        const email = document.getElementById('otpEmail').value;
-        const otp = document.getElementById('otpCode').value;
-        const res = await fetch('/api/verify-otp', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, otp})});
-        const data = await res.json();
-        alert(data.message || data.error);
-        if(data.success) showTab('chatTab');
-    }
-
-    async function askAI() {
-        const email = document.getElementById('chatEmail').value;
-        const question = document.getElementById('question').value;
-        const resDiv = document.getElementById('response');
-        resDiv.innerText = "Soch raha hoon...";
-        const res = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, question})});
-        const data = await res.json();
-        resDiv.innerText = data.response || data.error;
+        if(data.success) {
+            alert("Success! Welcome Admin.");
+            window.location.reload(); 
+        } else { 
+            alert(data.error); 
+        }
     }
 </script>
 </body>
