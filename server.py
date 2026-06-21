@@ -8,6 +8,10 @@ from database import get_db_connection, init_db
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
+@app.route('/')
+def home():
+    return "Welcome to AstroIslam AI! The API is running."
+
 openai.api_key = os.environ.get("OPENAI_API_KEY", "YOUR_OPENAI_KEY_HERE")
 
 init_db()
@@ -73,13 +77,13 @@ def chat():
     if not user:
         conn.close()
         return jsonify({"error": "Pehle login ya register karein!"}), 403
-    match = conn.execute("SELECT * FROM knowledge_base WHERE question LIKE ?", (f"%{question}%",)).fetchone()
+    match = conn.execute("SELECT * FROM knowledge_base WHERE question LIKE ?", (f'%{question}%',)).fetchone()
     if match:
-        full_res = f"{match['answer']}\n\n**📜 HAWALA / SOURCE:** {match['hawala']}"
+        full_res = f"{match['answer']}\n\n📜 HAWLA / SOURCE: **{match['hawala']}**"
         conn.close()
         return jsonify({"response": full_res, "source": "Custom DB"}), 200
     try:
-        system_prompt = f"You are AstroIslam AI. Only answer Cosmology & Quranic Science in {lang}. Strict rule: You must always add an authentic 'HAWALA / SOURCE' (like Quran verse, Hadith chapter, or Mufti context) at the very bottom of the answer."
+        system_prompt = f"You are AstroIslam AI. Only answer Cosmology & Quranic Science in {lang}. Strict rule: You must always add an authentic 'HAWLA / SOURCE' (like Quran verse, Hadith chapter, or Mufti context) at the very bottom of the answer."
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": question}]
