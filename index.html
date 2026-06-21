@@ -1,9 +1,53 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AstroIslam AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001f3f; color: #FFD700; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: #002b55; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; border: 1px solid #FFD700; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        h2 { color: #FFD700; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #FFD700; border-radius: 8px; background: #001f3f; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #FFD700; border: none; border-radius: 8px; color: #001f3f; font-weight: bold; cursor: pointer; }
+        .tab { display: none; }
+        .active { display: block; }
+        .tabs-nav { display: flex; justify-content: space-around; margin-bottom: 20px; cursor: pointer; color: white; }
+        .active-tab { border-bottom: 2px solid #FFD700; color: #FFD700; }
+    </style>
 </head>
 <body>
-    <h1>AstroIslam AI is Live!</h1>
+<div class="container">
+    <h2>AstroIslam AI</h2>
+    <div class="tabs-nav">
+        <span onclick="switchTab('login')" id="nav-login" class="active-tab">Login</span>
+        <span onclick="switchTab('reg')" id="nav-reg">Register</span>
+    </div>
+    <div id="login" class="tab active">
+        <input type="email" id="l-email" placeholder="Email...">
+        <input type="password" id="l-pass" placeholder="Password...">
+        <button onclick="alert('Login active!')">Login</button>
+    </div>
+    <div id="reg" class="tab">
+        <input type="email" id="r-email" placeholder="Email...">
+        <input type="password" id="r-pass" placeholder="Password...">
+        <button onclick="register()">Register</button>
+        <div id="otp-display" style="margin-top:10px; font-weight:bold;"></div>
+    </div>
+</div>
+<script>
+    function switchTab(id) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('nav-login').classList.toggle('active-tab', id === 'login');
+        document.getElementById('nav-reg').classList.toggle('active-tab', id === 'reg');
+    }
+    async function register() {
+        const email = document.getElementById('r-email').value;
+        const password = document.getElementById('r-pass').value;
+        const res = await fetch('/api/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password})});
+        const data = await res.json();
+        document.getElementById('otp-display').innerText = "OTP: " + (data.otp_preview || "Error");
+    }
+</script>
 </body>
 </html>
