@@ -1,78 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { background: #001f3f; color: #FFD700; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: #002b55; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #FFD700; text-align: center; }
-        .logo { width: 120px; height: 120px; margin-bottom: 20px; border-radius: 50%; border: 2px solid #FFD700; }
-        h2 { color: #FFD700; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #FFD700; border-radius: 8px; background: #001f3f; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #FFD700; border: none; border-radius: 8px; color: #001f3f; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .tab { display: none; }
-        .active { display: block; }
-        .tabs-nav { display: flex; justify-content: space-around; margin-bottom: 20px; cursor: pointer; color: white; }
-        .active-tab { border-bottom: 2px solid #FFD700; color: #FFD700; }
-        #otp-display { margin-top: 15px; padding: 10px; background: #FFD700; color: #001f3f; font-weight: bold; display: none; }
-    </style>
+    <title>AstroIslam AI</title>
 </head>
 <body>
-
-<div class="container">
-    <!-- Logo 4965.png placeholder -->
-    <img src="https://i.imgur.com/YOUR_IMAGE_LINK.png" class="logo" alt="AstroIslam Logo">
-    
-    <div class="tabs-nav">
-        <span onclick="switchTab('login')" id="nav-login" class="active-tab">Login</span>
-        <span onclick="switchTab('reg')" id="nav-reg">Register</span>
-    </div>
-
-    <!-- Login Tab -->
-    <div id="login" class="tab active">
-        <input type="email" id="l-email" placeholder="Email...">
-        <input type="password" id="l-pass" placeholder="Password...">
-        <button onclick="login()">Login</button>
-        <button onclick="alert('Google Login coming soon!')" style="background:#fff; margin-top:10px;">Sign in with Google</button>
-    </div>
-
-    <!-- Register Tab -->
-    <div id="reg" class="tab">
-        <input type="email" id="r-email" placeholder="Email...">
-        <input type="password" id="r-pass" placeholder="Password...">
-        <button onclick="register()">Register</button>
-        <div id="otp-display"></div>
-    </div>
-</div>
-
-<script>
-    function switchTab(id) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.getElementById('nav-login').classList.toggle('active-tab', id === 'login');
-        document.getElementById('nav-reg').classList.toggle('active-tab', id === 'reg');
-    }
-
-    async function register() {
-        const email = document.getElementById('r-email').value;
-        const password = document.getElementById('r-pass').value;
-        const res = await fetch('/api/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password})});
-        const data = await res.json();
-        if(data.otp_preview) {
-            const otpDiv = document.getElementById('otp-display');
-            otpDiv.style.display = 'block';
-            otpDiv.innerText = "OTP: " + data.otp_preview;
-        } else { alert(data.error); }
-    }
-
-    async function login() {
-        const email = document.getElementById('l-email').value;
-        const password = document.getElementById('l-pass').value;
-        const res = await fetch('/api/login', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password})});
-        const data = await res.json();
-        if(data.success) alert("Login Successful!");
-        else alert(data.error);
-    }
-</script>
+    <h1>AstroIslam AI is Live!</h1>
 </body>
 </html>
-
