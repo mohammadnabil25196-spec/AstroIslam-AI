@@ -26,10 +26,13 @@
             body: JSON.stringify({email, password})
         });
         const data = await res.json();
-        if(data.success) alert("Login Successful!");
-        else alert("Login Failed!");
+        if(data.success) {
+            alert("Login Successful!");
+            window.location.href = "/dashboard";
+        } else {
+            alert("Login Failed!");
+        }
     }
 </script>
 </body>
 </html>
-
