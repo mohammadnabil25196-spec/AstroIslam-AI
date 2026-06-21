@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
+        .chat-container { width: 100%; max-width: 400px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 90%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        #response { margin-top: 20px; padding: 10px; border-top: 1px solid #eee; min-height: 50px; color: #333; }
+    </style>
+</head>
 <body>
-    <h2>AstroIslam AI</h2>
-    <input type="text" id="email" placeholder="Apna Email daalo...">
-    <input type="text" id="question" placeholder="Sawal pucho...">
-    <button onclick="askAI()">Send</button>
-    <div id="response"></div>
+    <div class="chat-container">
+        <h2>AstroIslam AI</h2>
+        <input type="text" id="email" placeholder="Apna Registered Email...">
+        <input type="text" id="question" placeholder="Sawal pucho...">
+        <button onclick="askAI()">Send</button>
+        <div id="response"></div>
+    </div>
 
     <script>
         async function askAI() {
@@ -14,13 +26,17 @@
             const resDiv = document.getElementById('response');
             resDiv.innerText = "Soch raha hoon...";
             
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, question, lang: "Hinglish"})
-            });
-            const data = await response.json();
-            resDiv.innerText = data.response || data.error;
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, question, lang: "Hinglish"})
+                });
+                const data = await response.json();
+                resDiv.innerText = data.response || data.error;
+            } catch (err) {
+                resDiv.innerText = "Error: Server se connect nahi ho paaya.";
+            }
         }
     </script>
 </body>
