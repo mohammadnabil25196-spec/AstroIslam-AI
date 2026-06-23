@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AstroIslam AI</title>
+    <title>AstroIslam AI - Active</title>
     <style>
         :root { --bg: #0f172a; --sidebar: #020617; --accent: #f59e0b; }
         body { margin: 0; display: flex; height: 100vh; background: var(--bg); color: white; font-family: sans-serif; }
         #sidebar { width: 260px; background: var(--sidebar); padding: 20px; border-right: 1px solid #1e293b; }
         .nav-btn { width: 100%; padding: 12px; background: #1e293b; color: white; border: 1px solid #334155; border-radius: 8px; cursor: pointer; margin-bottom: 20px; }
         #main { flex: 1; display: flex; flex-direction: column; }
-        #chat-area { flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #chat-view, #admin-view { flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #admin-view { display: none; } /* Default hide admin */
         #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
         .modal-content { background: #1e293b; padding: 30px; border-radius: 20px; width: 300px; text-align: center; }
         select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; background: var(--bg); color: white; }
@@ -18,19 +19,45 @@
 <body>
     <div id="sidebar">
         <button class="nav-btn" onclick="document.getElementById('modal').style.display='flex'">+ New Chat</button>
-        <div style="color: #64748b;">History</div>
-        <div style="margin-top: auto;">⚙️ Admin Panel</div>
+        <div style="color: #64748b; cursor:pointer;" onclick="showView('chat')">📜 History</div>
+        <div style="margin-top: auto; cursor:pointer;" onclick="showView('admin')">⚙️ Admin Panel</div>
     </div>
+
     <div id="main">
-        <div id="chat-area"><h1>AstroIslam AI</h1><p>Select a topic to start.</p></div>
-    </div>
-    <div id="modal">
-        <div class="modal-content">
-            <h2>New Chat</h2>
-            <select><option>Cosmology</option><option>Islam</option><option>Scientific Reason</option></select>
-            <select><option>Simple (Short)</option><option>Extended (Detailed)</option></select>
-            <button class="nav-btn" onclick="document.getElementById('modal').style.display='none'">Start Chat</button>
+        <div id="chat-view">
+            <h1 id="chat-title">AstroIslam AI</h1>
+            <p id="chat-status">Select a topic to start.</p>
+        </div>
+        <div id="admin-view">
+            <h1>Admin Dashboard</h1>
+            <p>User logs will appear here soon...</p>
+            <button onclick="showView('chat')" class="nav-btn" style="width:200px;">Back to Chat</button>
         </div>
     </div>
+
+    <div id="modal">
+        <div class="modal-content">
+            <h2>Start New Session</h2>
+            <select id="topic"><option>Cosmology</option><option>Islam</option><option>Scientific Reason</option></select>
+            <select id="mode"><option>Simple (Short)</option><option>Extended (Detailed)</option></select>
+            <button class="nav-btn" onclick="startChat()">Start Chat</button>
+        </div>
+    </div>
+
+    <script>
+        function showView(view) {
+            document.getElementById('chat-view').style.display = (view === 'chat') ? 'flex' : 'none';
+            document.getElementById('admin-view').style.display = (view === 'admin') ? 'flex' : 'none';
+        }
+        
+        function startChat() {
+            const topic = document.getElementById('topic').value;
+            const mode = document.getElementById('mode').value;
+            document.getElementById('chat-title').innerText = topic + " (" + mode + ")";
+            document.getElementById('chat-status').innerText = "Chat initialized. Awaiting backend integration...";
+            document.getElementById('modal').style.display = 'none';
+            showView('chat');
+        }
+    </script>
 </body>
 </html>
