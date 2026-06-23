@@ -2,61 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AstroIslam AI - Active</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroIslam AI Dashboard</title>
     <style>
         :root { --bg: #0f172a; --sidebar: #020617; --accent: #f59e0b; }
-        body { margin: 0; display: flex; height: 100vh; background: var(--bg); color: white; font-family: sans-serif; }
-        #sidebar { width: 260px; background: var(--sidebar); padding: 20px; border-right: 1px solid #1e293b; }
-        .nav-btn { width: 100%; padding: 12px; background: #1e293b; color: white; border: 1px solid #334155; border-radius: 8px; cursor: pointer; margin-bottom: 20px; }
-        #main { flex: 1; display: flex; flex-direction: column; }
-        #chat-view, #admin-view { flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #admin-view { display: none; } /* Default hide admin */
-        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
-        .modal-content { background: #1e293b; padding: 30px; border-radius: 20px; width: 300px; text-align: center; }
-        select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; background: var(--bg); color: white; }
+        body { margin: 0; display: flex; height: 100vh; background: var(--bg); color: white; font-family: sans-serif; overflow: hidden; }
+        
+        /* Sidebar Styling */
+        #sidebar { width: 260px; background: var(--sidebar); padding: 20px; border-right: 1px solid #1e293b; display: flex; flex-direction: column; gap: 15px; }
+        .nav-btn { width: 100%; padding: 12px; background: #1e293b; color: white; border: 1px solid #334155; border-radius: 8px; cursor: pointer; text-align: left; }
+        .nav-btn:hover { background: #334155; }
+        
+        /* Main Layout */
+        #main { flex: 1; display: flex; flex-direction: column; position: relative; }
+        .view { flex: 1; padding: 40px; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        #chat-view { display: flex; }
+        
+        /* Modal Popup */
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #1e293b; padding: 30px; border-radius: 20px; width: 320px; text-align: center; border: 1px solid #334155; }
+        select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; background: #0f172a; color: white; border: 1px solid #475569; }
+        
+        /* Typography */
+        h1 { margin-bottom: 10px; }
     </style>
 </head>
 <body>
+
     <div id="sidebar">
         <button class="nav-btn" onclick="document.getElementById('modal').style.display='flex'">+ New Chat</button>
-        <div style="color: #64748b; cursor:pointer;" onclick="showView('chat')">📜 History</div>
-        <div style="margin-top: auto; cursor:pointer;" onclick="showView('admin')">⚙️ Admin Panel</div>
+        <button class="nav-btn" onclick="showView('chat-view')">📜 History</button>
+        <div style="margin-top: auto;">
+            <button class="nav-btn" onclick="showView('admin-view')">⚙️ Admin Panel</button>
+        </div>
     </div>
 
     <div id="main">
-        <div id="chat-view">
+        <div id="chat-view" class="view">
             <h1 id="chat-title">AstroIslam AI</h1>
-            <p id="chat-status">Select a topic to start.</p>
+            <p id="chat-status">Select a topic to start your journey.</p>
         </div>
-        <div id="admin-view">
+
+        <div id="admin-view" class="view">
             <h1>Admin Dashboard</h1>
-            <p>User logs will appear here soon...</p>
-            <button onclick="showView('chat')" class="nav-btn" style="width:200px;">Back to Chat</button>
+            <p>System Logs & User Controls</p>
+            <button class="nav-btn" style="width:200px; text-align:center;" onclick="showView('chat-view')">Back to Chat</button>
         </div>
     </div>
 
     <div id="modal">
         <div class="modal-content">
             <h2>Start New Session</h2>
-            <select id="topic"><option>Cosmology</option><option>Islam</option><option>Scientific Reason</option></select>
-            <select id="mode"><option>Simple (Short)</option><option>Extended (Detailed)</option></select>
-            <button class="nav-btn" onclick="startChat()">Start Chat</button>
+            <select id="topic">
+                <option>Cosmology</option>
+                <option>Islam</option>
+                <option>Scientific Reason</option>
+            </select>
+            <select id="mode">
+                <option>Simple (Short)</option>
+                <option>Extended (Detailed)</option>
+            </select>
+            <button class="nav-btn" style="text-align:center; background: #f59e0b; color:black; font-weight:bold;" onclick="startChat()">Start Chat</button>
+            <button class="nav-btn" style="text-align:center; background: transparent; border:none;" onclick="document.getElementById('modal').style.display='none'">Cancel</button>
         </div>
     </div>
 
     <script>
-        function showView(view) {
-            document.getElementById('chat-view').style.display = (view === 'chat') ? 'flex' : 'none';
-            document.getElementById('admin-view').style.display = (view === 'admin') ? 'flex' : 'none';
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+            document.getElementById(viewId).style.display = 'flex';
         }
         
         function startChat() {
             const topic = document.getElementById('topic').value;
             const mode = document.getElementById('mode').value;
             document.getElementById('chat-title').innerText = topic + " (" + mode + ")";
-            document.getElementById('chat-status').innerText = "Chat initialized. Awaiting backend integration...";
+            document.getElementById('chat-status').innerText = "Chat initialized. Ready for backend integration.";
             document.getElementById('modal').style.display = 'none';
-            showView('chat');
+            showView('chat-view');
         }
     </script>
 </body>
