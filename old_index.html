@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001f3f; color: #FFD700; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: #002b55; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; border: 1px solid #FFD700; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #FFD700; border-radius: 8px; background: #001f3f; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #FFD700; border: none; border-radius: 8px; color: #001f3f; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>AstroIslam AI</h2>
+    <input type="email" id="email" placeholder="Email...">
+    <input type="password" id="pass" placeholder="Password...">
+    <button onclick="login()">Login</button>
+</div>
+<script>
+    async function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('pass').value;
+        const res = await fetch('/api/login', { 
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify({email, password})
+        });
+        const data = await res.json();
+        if(data.success) {
+            alert("Login Successful!");
+            window.location.href = "/dashboard";
+        } else {
+            alert("Login Failed!");
+        }
+    }
+</script>
+</body>
+</html>
