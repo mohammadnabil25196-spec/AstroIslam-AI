@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <div>
+        <h3>Add Information</h3>
+        <input type="text" id="info-input" placeholder="Enter info here">
+        <button onclick="submitInfo()">Save to Database</button>
+    </div>
+    <br>
+    <a href="/api/chat">Back to Chat</a>
+
+    <script>
+    async function submitInfo() {
+        const info = document.getElementById('info-input').value;
+        const response = await fetch('/api/add-info', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({info: info})
+        });
+        const result = await response.json();
+        alert("Status: " + JSON.stringify(result));
+    }
+    </script>
+</body>
+</html>
